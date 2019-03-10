@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Document</title>
+</head>
+
+<body>
+  <h1>Dummy page</h1>
+  <button id="get-image-button">Get image</button>
+  <div id="img-container">
+
+  </div>
+
+  <section>
+    <div>
+      <label>Token:</label>
+      <input type="text" id="token-value" />
+    </div>
+    <div>
+      <button id="validate-token-button">Validate</button>
+    </div>
+    <div id="validation-result"></div>
+  </section>
+
+  <script>
+    const actionButton = document.getElementById("get-image-button");
+    actionButton.addEventListener("click", (e) => {
+      fetch("/generateImage").then(r => {
+        r.text().then(t => document.getElementById("img-container").innerHTML = t);
+      })
+    });
+
+    const validateButton = document.getElementById("validate-token-button");
+    validateButton.addEventListener("click", (e) => {
+      const tokenToValidate = document.getElementById("token-value").value;
+
+      fetch("/validtaeToken/" + tokenToValidate)
+        .then(d => {
+          d.text().then(v => {
+            try {
+              const result = JSON.parse(v);
+              document.getElementById("validation-result").innerHTML = result ? "token is valid" :
+                "token is not valid";
+
+            } catch (e) {
+
+            }
+          })
+        })
+    });
+  </script>
+</body>
+
+</html>
